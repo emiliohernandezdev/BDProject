@@ -103,7 +103,7 @@ AND YEAR(C.FecHorCita) = 2019
 SELECT * FROM TB_Cita C
 INNER JOIN TB_Paciente P
 ON C.CodPac = P.CodPac
-WHERE P.NomCli = 'CARLOS' AND P.ApelCli = 'PEREZ' 
+WHERE P.NomCli = 'Carlos' AND P.ApelCli = 'Perez' 
 
 -- 15 Listado de todos los empleados donde se vea los años
 SELECT CodEmp, CONCAT(NomEmp, ' ', ApelEmp) as NombreCompleto, 
@@ -133,13 +133,8 @@ GROUP BY P.CodPac, p.NomCli, p.ApelCli
 SELECT * FROM TB_Habitaciones
 
 -- 16 a) Listado de medicamentos entregados al señor JUAN PEREZ, en el año 2019
-SELECT YEAR(MD.FecInic) as Anio FROM TB_Medicacion MD
+SELECT *  FROM TB_Medicacion MD
 INNER JOIN TB_Paciente P
 ON MD.CodPac = P.CodPac
-INNER JOIN TB_Producto PR
-ON MD.CodProd = PR.CodProd
-WHERE P.CodPac = (SELECT CodPac FROM TB_Paciente WHERE NomCli = 'JUAN' AND ApelCli='PEREZ')
-AND YEAR(MD.FecInic) = 2019
-GROUP BY YEAR(MD.FecInic)
 
 

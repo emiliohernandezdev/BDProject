@@ -38,6 +38,8 @@ AS
 
 
 exec InsertPaciente 'María Fernanda', 'Sánchez', 'Antigua Guatemala, Sacatepequez', '20010416', 'Masculino', 2, '20190215', 'Soltera', 35132112 
+exec InsertPaciente 'Carlos', 'Perez', 'Suchitepequez', '19940401', 'Masculino', 3, '20190101', 'Soltero', 44312310 
+exec InsertPaciente 'Juan', 'Perez', 'Guastatoya, El Progreso', '20000505', 'Masculino', 3, '20220101', 'Soltero', 55641021 
 
 
 CREATE PROCEDURE InsertHabitacion @Departamento int, @Bloque varchar(80), @Descripcion varchar(150), @Tel int
@@ -47,6 +49,7 @@ AS
 
 
 exec InsertHabitacion 1, '5', 'ALA SUR', 1057
+exec InsertHabitacion 1, '5', 'ALA NORTE', 1058
 
 CREATE PROCEDURE InsertCita @Paciente int, @Habitacion int, @Empleado int, @FechaHora datetime,
 @FecEspSalida date, @FecSalida date
@@ -56,5 +59,57 @@ AS
 
 
 	exec InsertCita 3,1,3, '2019-01-10T00:00:00', '2019-01-10', '2019-01-31'
+	exec InsertCita 4,1,2, '2019-12-25T00:00:00', '2019-12-25', '2019-12-31'
+	exec InsertCita 5,1,2, '2021-12-25T00:00:00', '2021-12-25', '2021-12-31'
 
-	SELECT * FROM TB_Empleados
+CREATE PROCEDURE InsertCama @Habitacion int
+AS
+	INSERT INTO TB_Camas (CodHab) VALUES (@Habitacion)
+
+	exec InsertCama '1'
+
+CREATE PROCEDURE InsertTipoProducto @Tipo varchar(100)
+AS
+	INSERT INTO TB_TipoProducto (Tipo) VALUES (@Tipo)
+
+	exec InsertTipoProducto 'Anestesias'
+	exec InsertTipoProducto 'Sueros'
+	exec InsertTipoProducto 'Pastillas'
+
+CREATE PROCEDURE InsertProveedor @Nombre varchar(100), @Descripcion varchar(150), @Telefono int
+AS
+	INSERT INTO TB_Proveedores (Nombre, Descripcion, CodTelf)
+	VALUES (@Nombre, @Descripcion, @Telefono)
+
+	exec InsertProveedor 'Pfizer', 'Casa Pfizer', 24001010
+	exec InsertProveedor 'Bayer', 'Casa Bayer', 23302101
+
+CREATE PROCEDURE InsertProducto @Nombre varchar(100), @Descripcion varchar(150), @Tipo int, @Proveedor int
+AS
+	INSERT INTO TB_Producto (Nombre, Descripcion, CodTipo, CodProve)
+	VALUES (@Nombre, @Descripcion, @Tipo, @Proveedor)
+
+	exec InsertProducto 'Aspirinas', 'Aspirinas Bayer', 3, 2
+
+CREATE PROCEDURE InsertNivel @Nivel varchar(100)
+AS
+	INSERT INTO TB_Almacen_Nivel (Nivel) VALUES (@Nivel)
+
+	exec InsertNivel '2'
+
+CREATE PROCEDURE InsertProductoAlmacen @Producto int, @Nivel int, @Cantidad int, @CostoUnitario money
+AS
+	INSERT INTO TB_Producto_Almacen (CodProd, CodNivel, Cantidad, CostoUnitario)
+	VALUES (@Producto, @Nivel, @Cantidad, @CostoUnitario)
+
+	exec InsertProductoAlmacen 1, 1, 250, '25.50'
+
+CREATE PROCEDURE InsertMedicacion @Paciente int, @Camas int, @Producto int, @UnidadesDiarias int,
+@FechaInicio date, @FechaFin date
+AS
+	INSERT INTO TB_Medicacion (CodPac, CodCamas, CodProd, UnidadesDiarias, FecInic, FecFin)
+	VALUES (@Paciente, @Camas, @Producto, @UnidadesDiarias, @FechaInicio, @FechaFin)
+
+	exec InsertMedicacion 5, 1, 1, 3, '2022-10-12', '2022-10-01'
+
+	select * from TB_Medicacion
